@@ -1,0 +1,73 @@
+a:link {text-decoration: none; color: Black;}
+a:visited {text-decoration: none; color: Black;}
+a:focus { /* Deklarationen */ }
+a:hover {text-decoration: none; color: #0000D8 !important}
+a:active { /* Deklarationen */ }
+
+html, body, main{
+  font-family: sans-serif;
+  height: 100%;
+  margin: 0px;
+  background-color: #F5F5F5;
+  font-size: 20px;
+}
+
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+
+.header {
+  text-align: center;
+  height: 7%;
+}
+
+.list-of-games {
+  float: left;
+  width: 30%;
+  background-color: lightgray;
+  margin-right: 2%;
+  padding: 1%;
+  height: 83%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+.single-game {
+  background-color: lightgray;
+  height: 83%;
+  float: left;
+  width: 64%;
+  padding: 1%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  direction: rtl;
+}
+
+.gameID {
+  font-size: small;
+  font-weight: lighter;
+}
+.opponent {
+  margin-top: 2%;
+  margin-bottom: 2%;
+}
+.yourturn {
+  height: 15px;
+  width: 15px;
+  background-color: rgba(255,0,0,0.5);
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+  margin-top: 2.5%;
+}
+
+.overview {
+  float: left;
+}
+.buttons {
+  text-align: right;
+}
