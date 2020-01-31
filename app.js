@@ -34,6 +34,10 @@ app.use('/users', usersRouter);
 app.use('/test', testRouter);
 //app.use('/games', gamesRouter);
 
+function getOccurrence(array, value) {
+    return array.filter((v) => (v === value)).length;
+}
+
 app.post('/games', function(req, res, next) {
   var username=req.body.username;
   var password=req.body.password;
@@ -61,7 +65,13 @@ app.post('/games', function(req, res, next) {
       gameIDs.push(gameList.user.games[i].game_id);
       opponents.push(gameList.user.games[i].opponent.name);
       yourturns.push(gameList.user.games[i].your_turn);
-      points.push(gameList.user.games[i].your_answers.length);
+
+      var yourAnswers = gameList.user.games[i].your_answers;
+      var opponentAnswers = gameList.user.games[i].opponent_answers;
+      var yourPoints = getOccurrence(yourAnswers, 0);
+      var opponentPoints = getOccurrence(opponentAnswers, 0);
+      points.push(yourPoints+":"+opponentPoints);
+
       rounds.push(gameList.user.games[i].cat_choices.length);
     }
     //console.log(stdout);
