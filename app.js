@@ -37,12 +37,36 @@ app.use('/test', testRouter);
 app.post('/games', function(req, res, next) {
   var username=req.body.username;
   var password=req.body.password;
-  var gameIDs = ["123","456","789","101112","131415"];
-  var opponents = ["Clemens1","Clemens2","Clemens3","Clemens4","Clemens5"];
-  var yourturns = [true, true, false, true, false, false];
-  var points = ["1:1","2:2","3:3","4:4","5:5"];
-  var rounds = ["1","2","3","4","5"];
-  res.render('games', { username: username, password: password, numberOfGames: 5, gameIDs: gameIDs, opponents: opponents, points: points, rounds: rounds, yourturns: yourturns });
+  //var gameIDs = ["123","456","789","101112","131415"];
+  //var opponents = ["Clemens1","Clemens2","Clemens3","Clemens4","Clemens5"];
+  //var yourturns = [true, true, false, true, false, false];
+  //var points = ["1:1","2:2","3:3","4:4","5:5"];
+  //var rounds = ["1","2","3","4","5"];
+  var gameIDs = [];
+  var opponents = [];
+  var yourturns = [];
+  var points = [];
+  var rounds = [];
+
+  const { exec } = require('child_process');
+  exec("python scripts/games.py --username="+username+" --password="+password, (err, stdout, stderr) => {
+    if (err) {
+      // node couldn't execute the command
+      console.log("irgendwie geht der befehl nicht");
+      return;
+    }
+    var gameList = JSON.parse(stdout);
+    numberOfGames = gameList.user.games.length;
+    for (var i = 0; i < numberOfGames; i++) {
+      gameIDs.push(gameList.user.games[i].game_id);
+      opponents.push(gameList.user.games[i].opponent.name);
+      yourturns.push(gameList.user.games[i].your_turn);
+      points.push(gameList.user.games[i].your_answers.length);
+      rounds.push(gameList.user.games[i].cat_choices.length);
+    }
+    //console.log(stdout);
+    res.render('games', { username: username, password: password, numberOfGames: numberOfGames, gameIDs: gameIDs, opponents: opponents, points: points, rounds: rounds, yourturns: yourturns});
+  });
 });
 
 // catch 404 and forward to error handler
