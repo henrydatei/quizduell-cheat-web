@@ -64,6 +64,16 @@ html, body, main{
   margin: 10px;
   margin-top: 2.5%;
 }
+.notyourturn {
+  height: 15px;
+  width: 15px;
+  background-color: rgba(0,0,0,0);
+  border-radius: 50%;
+  display: inline-block;
+  float: left;
+  margin: 10px;
+  margin-top: 2.5%;
+}
 
 .overview {
   float: left;
