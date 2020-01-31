@@ -1,6 +1,14 @@
 extends layout
 
 block content
-  h1 games
-  p #{username}
-  p #{password}
+  div(class='header')
+    h2 Quizduell Cheat - Games
+
+  div(class='list-of-games')
+    - for (var i = 0; i < numberOfGames; i++) {
+    div(class='game')
+      div(class='gameID')= 'GameID: '+gameIDs[i]
+      div(class='yourturn')= ' '
+      div(class='opponent')= username+' gegen '+opponents[i]+' ['+points[i]+', Runde '+rounds[i]+']'
+      hr
+    - }

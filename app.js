@@ -1,3 +1,5 @@
+// DEBUG=quizduell-cheat-web:* node ./bin/www
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -35,7 +37,11 @@ app.use('/test', testRouter);
 app.post('/games', function(req, res, next) {
   var username=req.body.username;
   var password=req.body.password;
-  res.render('games', { username: username, password: password });
+  var gameIDs = ["123","456","789","101112","131415"];
+  var opponents = ["Clemens1","Clemens2","Clemens3","Clemens4","Clemens5"];
+  var points = ["1:1","2:2","3:3","4:4","5:5"];
+  var rounds = ["1","2","3","4","5"];
+  res.render('games', { username: username, password: password, numberOfGames: 5, gameIDs: gameIDs, opponents: opponents, points: points, rounds: rounds });
 });
 
 // catch 404 and forward to error handler
