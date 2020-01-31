@@ -6,7 +6,7 @@ block content
 
   div(class='list-of-games')
     - for (var i = 0; i < numberOfGames; i++) {
-    div(class='game')
+    div(class='game', onclick="showGameID("+gameIDs[i]+")")
       div(class='gameID')= 'GameID: '+gameIDs[i]
       if yourturns[i] == true
         div(class='yourturn')= ' '
@@ -15,3 +15,8 @@ block content
       div(class='opponent')= username+' gegen '+opponents[i]+' ['+points[i]+', Runde '+rounds[i]+']'
       hr
     - }
+
+  script.
+    function showGameID(gameID) {
+      alert(gameID);
+    }
