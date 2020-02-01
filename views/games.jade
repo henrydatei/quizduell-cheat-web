@@ -53,29 +53,35 @@ block content
       button2.name = "perfect-game";
       button2.innerHTML = "Perfect-Game-Bot";
       document.getElementsByClassName('single-game')[0].appendChild(button2);
+      
+      prepareData(name, password, gameID);
+      //console.log(rawData);
+      //var categorys = getCategorys(rawData);
+      //console.log(categorys);
     }
     
-    function getRawData(username, password, gameID) {
+    function prepareData(username, password, gameID) {
       // holen der Rohdaten
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           // Typical action to be performed when the document is ready:
-          return xhttp.responseText;
+          var rawData = xhttp.responseText;
+          
+          // Kategorien
+          var json = JSON.parse(rawData);
+          var categorys = [];
+          for (var i = 0; i < 18; i++) {
+            var category = json.game.questions[3*i].cat_name;
+            categorys.push(category);
+          }
+          console.log(categorys);
+          
+          // Fragen
         }
       };
       xhttp.open("GET", "getAnswers?gameID="+gameID+"&username="+username+"&password="+password, true);
       xhttp.send();
-    }
-    
-    function getCategorys(rawData) {
-      var json = JSON.parse(rawData);
-      var categorys = [];
-      for (var i = 0; i < 18; i++) {
-        var category = json.game.questions[3*i].cat_name;
-        categorys.push(category);
-      }
-      return categorys;
     }
     
     function showQuestions(categorys, data) {
