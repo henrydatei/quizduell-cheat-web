@@ -11,7 +11,6 @@ var indexRouter = require('./routes/index');
 var testRouter = require('./routes/test');
 //var gamesRouter = require('./routes/games');
 var usersRouter = require('./routes/users');
-const { exec } = require('child_process');
 
 var app = express();
 
@@ -40,8 +39,8 @@ function getOccurrence(array, value) {
 }
 
 app.post('/games', function(req, res, next) {
-  var username=req.body.username;
-  var password=req.body.password;
+  var username = req.body.username;
+  var password = req.body.password;
   //var gameIDs = ["123","456","789","101112","131415"];
   //var opponents = ["Clemens1","Clemens2","Clemens3","Clemens4","Clemens5"];
   //var yourturns = [true, true, false, true, false, false];
@@ -53,10 +52,12 @@ app.post('/games', function(req, res, next) {
   var points = [];
   var rounds = [];
 
+  const { exec } = require('child_process');
   exec("python scripts/games.py --username="+username+" --password="+password, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
       console.log("Ich kann die den Befehl python scripts/games.py --username="+username+" --password="+password+"nicht ausführen");
+      console.log(err);
       return;
     }
     var gameList = JSON.parse(stdout);
@@ -76,7 +77,24 @@ app.post('/games', function(req, res, next) {
       rounds.push(gameList.user.games[i].cat_choices.length);
     }
     //console.log(stdout);
-    res.render('games', { username: username, password: password, numberOfGames: numberOfGames, gameIDs: gameIDs, opponents: opponents, points: points, rounds: rounds, yourturns: yourturns});
+    res.render('games', { username: username, password: password, numberOfGames: numberOfGames, gameIDs: gameIDs, opponents: opponents, points: points, rounds: rounds, yourturns: yourturns, password: password});
+  });
+});
+
+app.get('/getAnswers', function(req,res,next) {
+  var gameID = req.query.gameID;
+  var username = req.query.username;
+  var password = req.query.password;
+
+  const { exec } = require('child_process');
+  exec("python scripts/answers.py --gameID="+gameID+" --username="+username+" --password="+password, (err, stdout, stderr) => {
+    if (err) {
+      // node couldn't execute the command
+      console.log("Ich kann die den Befehl python scripts/answers.py --gameID="+gameID+" --username="+username+" --password="+password+" nicht ausführen");
+      console.log(err);
+      return;
+    }
+    res.send(stdout);
   });
 });
 

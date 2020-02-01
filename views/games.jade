@@ -6,7 +6,7 @@ block content
     
   div(class='list-of-games')
     - for (var i = 0; i < numberOfGames; i++) {
-    div(class='game', onclick="showGameID("+gameIDs[i]+",'"+username+"','"+opponents[i]+"')")
+    div(class='game', onclick="showGameID("+gameIDs[i]+",'"+username+"','"+opponents[i]+"', '"+password+"')")
       div(class='gameID')= 'GameID: '+gameIDs[i]
       if yourturns[i] == true
         div(class='yourturn')= ' '
@@ -27,7 +27,7 @@ block content
         }
       }
     }  
-    function showGameID(gameID,name,opponent) {
+    function showGameID(gameID, name, opponent, password) {
       // alert(gameID);
       // entfernen des alten Divs
       document.getElementsByClassName("single-game").remove();
@@ -54,9 +54,33 @@ block content
       button2.innerHTML = "Perfect-Game-Bot";
       document.getElementsByClassName('single-game')[0].appendChild(button2);
     }
-    function showQuestions() {
-      var categorys = ["cat 1", " cat 2", "cat 3"];
-      var data = Array.from(Array(categorys.length*15+1).keys());
+    
+    function getRawData(username, password, gameID) {
+      // holen der Rohdaten
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          // Typical action to be performed when the document is ready:
+          return xhttp.responseText;
+        }
+      };
+      xhttp.open("GET", "getAnswers?gameID="+gameID+"&username="+username+"&password="+password, true);
+      xhttp.send();
+    }
+    
+    function getCategorys(rawData) {
+      var json = JSON.parse(rawData);
+      var categorys = [];
+      for (var i = 0; i < 18; i++) {
+        var category = json.game.questions[3*i].cat_name;
+        categorys.push(category);
+      }
+      return categorys;
+    }
+    
+    function showQuestions(categorys, data) {
+      //var categorys = ["cat 1", " cat 2", "cat 3"];
+      //var data = Array.from(Array(categorys.length*15+1).keys());
       
       var divQuestions = document.createElement("div");
       divQuestions.id = "questions";
