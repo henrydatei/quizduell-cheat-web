@@ -3,10 +3,10 @@ extends layout
 block content
   div(class='header')
     h2 Quizduell Cheat - Games
-
+    
   div(class='list-of-games')
     - for (var i = 0; i < numberOfGames; i++) {
-    div(class='game', onclick="showGameID("+gameIDs[i]+")")
+    div(class='game', onclick="showGameID("+gameIDs[i]+",'"+username+"','"+opponents[i]+"')")
       div(class='gameID')= 'GameID: '+gameIDs[i]
       if yourturns[i] == true
         div(class='yourturn')= ' '
@@ -17,6 +17,96 @@ block content
     - }
 
   script.
-    function showGameID(gameID) {
-      alert(gameID);
+    Element.prototype.remove = function() {
+      this.parentElement.removeChild(this);
+    }
+    NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+      for(var i = this.length - 1; i >= 0; i--) {
+        if(this[i] && this[i].parentElement) {
+          this[i].parentElement.removeChild(this[i]);
+        }
+      }
+    }  
+    function showGameID(gameID,name,opponent) {
+      // alert(gameID);
+      // entfernen des alten Divs
+      document.getElementsByClassName("single-game").remove();
+      
+      // neu Erstellen des Divs
+      var div = document.createElement("div");
+      div.className = "single-game";
+      document.body.appendChild(div);
+      var div2 = document.createElement("div");
+      div2.className = "overview";
+      div2.innerHTML = name+" gegen "+opponent;
+      document.getElementsByClassName('single-game')[0].appendChild(div2);
+      var div3 = document.createElement("div");
+      div3.className = "buttons";
+      document.getElementsByClassName('single-game')[0].appendChild(div3);
+      var button1 = document.createElement("button");
+      button1.type = "button";
+      button1.name = "legit";
+      button1.innerHTML = "Legit-Bot";
+      document.getElementsByClassName('single-game')[0].appendChild(button1);
+      var button2 = document.createElement("button");
+      button2.type = "button";
+      button2.name = "perfect-game";
+      button2.innerHTML = "Perfect-Game-Bot";
+      document.getElementsByClassName('single-game')[0].appendChild(button2);
+    }
+    function showQuestions() {
+      var categorys = ["cat 1", " cat 2", "cat 3"];
+      var data = Array.from(Array(categorys.length*15+1).keys());
+      
+      var divQuestions = document.createElement("div");
+      divQuestions.id = "questions";
+      divQuestions.className = "questions";
+      document.getElementsByClassName('single-game')[0].appendChild(divQuestions);
+      
+      var table = document.createElement("table");
+      table.id = "questionTable";
+      document.getElementById('questions').appendChild(table);
+      
+      for (var i = 0; i < categorys.length; i++) {
+        var tr = document.createElement("tr");
+        tr.id = i+"0";
+        document.getElementById('questionTable').appendChild(tr);
+        var td = document.createElement("td");
+        td.className = "category";
+        td.colSpan = "5";
+        td.innerHTML = categorys[i];
+        document.getElementById(i+"0").appendChild(td)
+        
+        var j = i*15+1;
+        for (var frage = 1; frage <= 3; frage++) {
+          var trFrage = document.createElement("tr");
+          trFrage.id = i+frage.toString();
+          document.getElementById('questionTable').appendChild(trFrage);
+          var tdQuestion = document.createElement("td");
+          tdQuestion.className = "question";
+          tdQuestion.innerHTML = data[j];
+          j++
+          document.getElementById(i+frage.toString()).appendChild(tdQuestion);
+          var tdRight = document.createElement("td");
+          tdRight.className = "right answer";
+          tdRight.innerHTML = data[j];
+          j++
+          document.getElementById(i+frage.toString()).appendChild(tdRight);
+          var tdWrong1 = document.createElement("td");
+          tdWrong1.className = "wrong answer";
+          tdWrong1.innerHTML = data[j];
+          j++
+          document.getElementById(i+frage.toString()).appendChild(tdWrong1);
+          var tdWrong2 = document.createElement("td");
+          tdWrong2.className = "wrong answer";
+          tdWrong2.innerHTML = data[j];
+          j++
+          document.getElementById(i+frage.toString()).appendChild(tdWrong2);
+          var tdWrong3 = document.createElement("td");
+          tdWrong3.className = "wrong answer";
+          tdWrong3.innerHTML = data[j];
+          j++
+          document.getElementById(i+frage.toString()).appendChild(tdWrong3);
+        }
+      }
     }

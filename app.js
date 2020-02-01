@@ -11,6 +11,7 @@ var indexRouter = require('./routes/index');
 var testRouter = require('./routes/test');
 //var gamesRouter = require('./routes/games');
 var usersRouter = require('./routes/users');
+const { exec } = require('child_process');
 
 var app = express();
 
@@ -52,15 +53,15 @@ app.post('/games', function(req, res, next) {
   var points = [];
   var rounds = [];
 
-  const { exec } = require('child_process');
   exec("python scripts/games.py --username="+username+" --password="+password, (err, stdout, stderr) => {
     if (err) {
       // node couldn't execute the command
-      console.log("irgendwie geht der befehl nicht");
+      console.log("Ich kann die den Befehl python scripts/games.py --username="+username+" --password="+password+"nicht ausführen");
       return;
     }
     var gameList = JSON.parse(stdout);
     numberOfGames = gameList.user.games.length;
+    console.log("Found "+numberOfGames+" Games");
     for (var i = 0; i < numberOfGames; i++) {
       gameIDs.push(gameList.user.games[i].game_id);
       opponents.push(gameList.user.games[i].opponent.name);

@@ -3,3 +3,5 @@ node_modules/
 cookie_file
 
 *.pyc
+
+index\.html
