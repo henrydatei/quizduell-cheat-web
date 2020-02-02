@@ -8,9 +8,9 @@ var logger = require('morgan');
 var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
-var testRouter = require('./routes/test');
+//var testRouter = require('./routes/test');
 //var gamesRouter = require('./routes/games');
-var usersRouter = require('./routes/users');
+//var usersRouter = require('./routes/users');
 
 var app = express();
 
@@ -30,8 +30,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/test', testRouter);
+//app.use('/users', usersRouter);
+//app.use('/test', testRouter);
 //app.use('/games', gamesRouter);
 
 function getOccurrence(array, value) {

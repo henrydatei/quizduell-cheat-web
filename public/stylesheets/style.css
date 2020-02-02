@@ -53,12 +53,15 @@ html, body, main{
   width: 100%;
   direction: ltr;
   margin-top: 20px;
+  border-collapse: collapse;
 }
 .question {
   width: 30%;
+  border: 1px solid black;
 }
 .answer {
   width: 17.5%;
+  border: 1px solid black;
 }
 .right {
   background-color: rgba(0,255,0,0.5);
@@ -101,6 +104,7 @@ html, body, main{
 
 .overview {
   float: left;
+  direction: ltr;
 }
 .buttons {
   text-align: right;

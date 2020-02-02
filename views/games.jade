@@ -43,16 +43,16 @@ block content
       var div3 = document.createElement("div");
       div3.className = "buttons";
       document.getElementsByClassName('single-game')[0].appendChild(div3);
-      var button1 = document.createElement("button");
-      button1.type = "button";
-      button1.name = "legit";
-      button1.innerHTML = "Legit-Bot";
-      document.getElementsByClassName('single-game')[0].appendChild(button1);
-      var button2 = document.createElement("button");
-      button2.type = "button";
-      button2.name = "perfect-game";
-      button2.innerHTML = "Perfect-Game-Bot";
-      document.getElementsByClassName('single-game')[0].appendChild(button2);
+      //- var button1 = document.createElement("button");
+      //- button1.type = "button";
+      //- button1.name = "legit";
+      //- button1.innerHTML = "Legit-Bot";
+      //- document.getElementsByClassName('single-game')[0].appendChild(button1);
+      //- var button2 = document.createElement("button");
+      //- button2.type = "button";
+      //- button2.name = "perfect-game";
+      //- button2.innerHTML = "Perfect-Game-Bot";
+      //- document.getElementsByClassName('single-game')[0].appendChild(button2);
       
       prepareData(name, password, gameID);
       //console.log(rawData);
@@ -78,6 +78,23 @@ block content
           console.log(categorys);
           
           // Fragen
+          var data = [];
+          for (var j = 0; j < 54; j++) {
+            var question = json.game.questions[j].question;
+            var right = json.game.questions[j].correct;
+            var wrong1 = json.game.questions[j].wrong1;
+            var wrong2 = json.game.questions[j].wrong2;
+            var wrong3 = json.game.questions[j].wrong3;
+            data.push(question);
+            data.push(right);
+            data.push(wrong1);
+            data.push(wrong2);
+            data.push(wrong3);
+          }
+          console.log(data);
+          
+          // alles anzeigen
+          showQuestions(categorys, data);
         }
       };
       xhttp.open("GET", "getAnswers?gameID="+gameID+"&username="+username+"&password="+password, true);
@@ -85,8 +102,8 @@ block content
     }
     
     function showQuestions(categorys, data) {
-      //var categorys = ["cat 1", " cat 2", "cat 3"];
-      //var data = Array.from(Array(categorys.length*15+1).keys());
+      // var categorys = ["cat 1", " cat 2", "cat 3"];
+      // var data = Array.from(Array(categorys.length*15+1).keys());
       
       var divQuestions = document.createElement("div");
       divQuestions.id = "questions";
@@ -107,7 +124,7 @@ block content
         td.innerHTML = categorys[i];
         document.getElementById(i+"0").appendChild(td)
         
-        var j = i*15+1;
+        var j = i*15;
         for (var frage = 1; frage <= 3; frage++) {
           var trFrage = document.createElement("tr");
           trFrage.id = i+frage.toString();
@@ -115,28 +132,36 @@ block content
           var tdQuestion = document.createElement("td");
           tdQuestion.className = "question";
           tdQuestion.innerHTML = data[j];
-          j++
+          j++;
           document.getElementById(i+frage.toString()).appendChild(tdQuestion);
           var tdRight = document.createElement("td");
           tdRight.className = "right answer";
           tdRight.innerHTML = data[j];
-          j++
+          j++;
           document.getElementById(i+frage.toString()).appendChild(tdRight);
           var tdWrong1 = document.createElement("td");
           tdWrong1.className = "wrong answer";
           tdWrong1.innerHTML = data[j];
-          j++
+          j++;
           document.getElementById(i+frage.toString()).appendChild(tdWrong1);
           var tdWrong2 = document.createElement("td");
           tdWrong2.className = "wrong answer";
           tdWrong2.innerHTML = data[j];
-          j++
+          j++;
           document.getElementById(i+frage.toString()).appendChild(tdWrong2);
           var tdWrong3 = document.createElement("td");
           tdWrong3.className = "wrong answer";
           tdWrong3.innerHTML = data[j];
-          j++
+          j++;
           document.getElementById(i+frage.toString()).appendChild(tdWrong3);
         }
+        var trLeer = document.createElement("tr");
+        trLeer.id = i+"4";
+        document.getElementById('questionTable').appendChild(trLeer);
+        var tdLeer = document.createElement("td");
+        tdLeer.className = "category";
+        tdLeer.colSpan = "5";
+        tdLeer.innerHTML = "&nbsp;";
+        document.getElementById(i+"4").appendChild(tdLeer)
       }
     }
