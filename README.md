@@ -14,3 +14,4 @@ Clone/Download the repository with `https://github.com/henrydatei/quizduell-chea
 
 ### Remarks
 - After entering your Quizduell credentials a cookie will be created (`cookie_file`) that has a lifetime of 10 years. The value of this cookie is used to authenticate the user over multiple requests. That means if you enter the wrong credentials you have to delete the cookie file and login again. If you want to change your account then you have to delete the cookie file too.
+- I've used welljs' code for the python backend: [https://github.com/welljsjs/quizduellapi](https://github.com/welljsjs/quizduellapi)
