@@ -49,10 +49,37 @@ html, body, main{
   overflow-y: scroll;
   direction: rtl;
 }
+.gameStatus {
+  direction: ltr;
+}
+.gameStatus table {
+  border-collapse: collapse;
+  margin-top: 50px;
+}
+#above-row {
+  border-bottom: 1px solid black;
+}
+.border {
+  border-right: 1px solid black;
+}
+.playername {
+  border-right: 1px solid black;
+}
+.right-answer {
+  background-color: rgba(0, 255, 0, 0.5);
+  width: 25px;
+}
+.wrong-answer {
+  background-color: rgba(255, 0, 0, 0.5);
+  width: 25px;
+}
+.no-answer {
+  width: 25px;
+}
 .questions table {
   width: 100%;
   direction: ltr;
-  margin-top: 20px;
+  margin-top: 50px;
   border-collapse: collapse;
 }
 .question {

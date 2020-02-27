@@ -54,13 +54,32 @@ block content
       //- button2.innerHTML = "Perfect-Game-Bot";
       //- document.getElementsByClassName('single-game')[0].appendChild(button2);
       
-      prepareData(name, password, gameID);
+      // shows all questions with answers
+      prepareData(name, password, gameID, opponent);
       //console.log(rawData);
       //var categorys = getCategorys(rawData);
       //console.log(categorys);
     }
     
-    function prepareData(username, password, gameID) {
+    function countZerosInArray(array) {
+      var counter = 0;
+      for (var i = 0; i < array.length; i++) {
+        if (array[i] == 0) {
+          counter++;
+        }
+      }
+      return counter;
+    }
+    
+    function overwriteArray(array) {
+      var template = [-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1];
+      for (var i = 0; i < array.length; i++) {
+        template[i] = array[i];
+      }
+      return template;
+    }
+    
+    function prepareData(username, password, gameID, opponent) {
       // holen der Rohdaten
       var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = function() {
@@ -93,7 +112,20 @@ block content
           }
           console.log(data);
           
-          // alles anzeigen
+          // progress data
+          
+          var yourAnswers = json.game.your_answers;
+          yourAnswersFilled = overwriteArray(yourAnswers);
+          yourAnswersFilled.push(countZerosInArray(yourAnswers))
+          var opponentAnswers = json.game.opponent_answers;
+          opponentAnswersFilled = overwriteArray(opponentAnswers);
+          opponentAnswersFilled.push(countZerosInArray(opponentAnswers))
+          var progressData = yourAnswersFilled.concat(opponentAnswersFilled);
+          
+          // displays the "histroy" of the games
+          showGameProcess(username, opponent, progressData)
+          
+          // shows all questions with answers
           showQuestions(categorys, data);
         }
       };
@@ -164,4 +196,104 @@ block content
         tdLeer.innerHTML = "&nbsp;";
         document.getElementById(i+"4").appendChild(tdLeer)
       }
+    }
+    
+    function showGameProcess(name, opponent, data) {
+      //data = [1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,-1,-1,18, 1,0,0,1,0,0,1,0,0,1,0,0,1,0,0,-1,-1,-1,18]
+      var divProgress = document.createElement("div");
+      divProgress.id = "gameStatus";
+      divProgress.className = "gameStatus";
+      document.getElementsByClassName('single-game')[0].appendChild(divProgress);
+    
+      var table = document.createElement("table");
+      table.id = "progressTable";
+      document.getElementById('gameStatus').appendChild(table);
+    
+      // first row
+      var tr = document.createElement("tr");
+      tr.id = "above-row";
+      document.getElementById('progressTable').appendChild(tr);
+    
+      var td = document.createElement("td");
+      td.innerHTML = name;
+      td.className = "playername";
+      document.getElementById('above-row').appendChild(td);
+      for (var i = 0; i < 18; i++) {
+        var td = document.createElement("td");
+        td.innerHTML = "&nbsp;";
+        switch (data[i]) {
+          case 0:
+            // right answer
+            if (i % 3 == 2) {
+              td.className = "right-answer border";
+            } else {
+              td.className = "right-answer";
+            }
+            break;
+          case -1:
+            // no answer
+            if (i % 3 == 2) {
+              td.className = "no-answer border";
+            } else {
+              td.className = "no-answer";
+            }
+            break;
+          default:
+          // wrong answer
+          if (i % 3 == 2) {
+            td.className = "wrong-answer border";
+          } else {
+            td.className = "wrong-answer";
+          }
+            
+        }
+        document.getElementById('above-row').appendChild(td);
+      }
+      var td = document.createElement("td");
+      td.innerHTML = data[18];
+      document.getElementById('above-row').appendChild(td);
+      
+      // seconds row
+      var tr = document.createElement("tr");
+      tr.id = "below-row";
+      document.getElementById('progressTable').appendChild(tr);
+    
+      var td = document.createElement("td");
+      td.innerHTML = opponent;
+      td.className = "playername";
+      document.getElementById('below-row').appendChild(td);
+      for (var i = 19; i < 37; i++) {
+        var td = document.createElement("td");
+        td.innerHTML = "&nbsp;";
+        switch (data[i]) {
+          case 0:
+            // right answer
+            if (i % 3 == 0) {
+              td.className = "right-answer border";
+            } else {
+              td.className = "right-answer";
+            }
+            break;
+          case -1:
+            // no answer
+            if (i % 3 == 0) {
+              td.className = "no-answer border";
+            } else {
+              td.className = "no-answer";
+            }
+            break;
+          default:
+          // wrong answer
+          if (i % 3 == 0) {
+            td.className = "wrong-answer border";
+          } else {
+            td.className = "wrong-answer";
+          }
+            
+        }
+        document.getElementById('below-row').appendChild(td);
+      }
+      var td = document.createElement("td");
+      td.innerHTML = data[37];
+      document.getElementById('below-row').appendChild(td);
     }
